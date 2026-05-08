@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olivia Rodrigo — The Deep Dive</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-50: #f3f0ff;
+    --purple-100: #e5deff;
+    --purple-200: #cbbdff;
+    --purple-400: #a78bfa;
+    --purple-500: #8b5cf6;
+    --purple-600: #7c3aed;
+    --purple-700: #6d28d9;
+    --purple-800: #4c1d95;
+    --purple-900: #2e1065;
+    --lilac: #c4b5fd;
+    --soft-purple: #ede9fe;
+    --bg: #0f0a1e;
+    --bg2: #1a1030;
+    --bg3: #231540;
+    --card: #1e1235;
+    --card2: #261646;
+    --text: #f5f0ff;
+    --text2: #c4b5fd;
+    --text3: #9d84d4;
+    --border: rgba(196,181,253,0.15);
+    --border2: rgba(196,181,253,0.25);
+    --accent: #a78bfa;
+    --accent2: #c4b5fd;
+    --pink: #f472b6;
+    --gold: #fbbf24;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(160deg, #2e1065 0%, #1a0845 40%, #0f0a1e 100%);
+    padding: 3rem 1.25rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .star-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lilac);
+    border: 1px solid var(--border2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 8vw, 3.5rem);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+    background: linear-gradient(135deg, #f5f0ff 0%, #c4b5fd 60%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  header .tagline {
+    font-size: 13px;
+    color: var(--text3);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 0.25rem;
+  }
+
+  .born-tag {
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: 1.5rem;
+  }
+
+  .stat-item {
+    background: var(--bg2);
+    padding: 1rem 0.5rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+
+  .nav-inner {
+    display: flex;
+    gap: 0;
+    min-width: max-content;
+    padding: 0 0.5rem;
+  }
+
+  nav button {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text3);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.85rem 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  nav button.active {
+    color: var(--accent2);
+    border-bottom-color: var(--accent);
+    font-weight: 500;
+  }
+
+  nav button:hover:not(.active) {
+    color: var(--text2);
+  }
+
+  /* MAIN */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* SECTION HEADER */
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .section-header p {
+    font-size: 13px;
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 0.85rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--purple-700), transparent);
+    opacity: 0.6;
+  }
+
+  .card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.45rem;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--text3);
+    line-height: 1.65;
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .badge-purple { background: rgba(167,139,250,0.15); color: var(--lilac); border: 1px solid rgba(167,139,250,0.2); }
+  .badge-pink { background: rgba(244,114,182,0.12); color: #f9a8d4; border: 1px solid rgba(244,114,182,0.2); }
+  .badge-gold { background: rgba(251,191,36,0.1); color: #fcd34d; border: 1px solid rgba(251,191,36,0.2); }
+  .badge-teal { background: rgba(45,212,191,0.1); color: #5eead4; border: 1px solid rgba(45,212,191,0.2); }
+  .badge-gray { background: rgba(255,255,255,0.06); color: var(--text3); border: 1px solid var(--border); }
+
+  /* ALBUM CARDS */
+  .album-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .album-header {
+    background: var(--card2);
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .album-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .album-meta {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  .album-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--purple-500);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  /* TRACK LIST */
+  .track {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 0.65rem 1.2rem;
+    border-bottom: 1px solid rgba(196,181,253,0.07);
+    transition: background 0.15s;
+  }
+
+  .track:last-child { border-bottom: none; }
+  .track:hover { background: rgba(167,139,250,0.05); }
+
+  .track-num {
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 18px;
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  .track-star { color: var(--gold); }
+
+  .track-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .track-note {
+    font-size: 11.5px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  /* PERSON CARDS */
+  .person-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .person-card:last-child { border-bottom: none; }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+    border: 1px solid var(--border2);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .person-card h4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .person-card p {
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+
+  /* THEORY CARDS */
+  .theory {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--purple-500);
+    border-radius: 0 10px 10px 0;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .theory h4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent2);
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+  }
+
+  .theory p {
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.65;
+  }
+
+  /* TIMELINE */
+  .timeline-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .timeline-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .t-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--purple-500);
+    border: 2px solid var(--bg);
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  .t-line {
+    width: 1px;
+    flex: 1;
+    background: var(--border);
+    margin-top: 4px;
+  }
+
+  .timeline-year {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    margin-top: 2px;
+    min-width: 70px;
+  }
+
+  .timeline-content h4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+
+  .timeline-content p {
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1.6;
+  }
+
+  /* FUN FACTS */
+  .fact-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .fact-item:last-child { border-bottom: none; }
+
+  .fact-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .fact-text {
+    font-size: 13px;
+    color: var(--text3);
+    line-height: 1.65;
+  }
+
+  .fact-text strong {
+    color: var(--text2);
+    font-weight: 500;
+  }
+
+  /* SUBSECTION LABELS */
+  .sub-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--purple-500);
+    font-weight: 500;
+    margin: 1.5rem 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sub-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* CONNECTIONS GRID */
+  .conn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .conn-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem;
+  }
+
+  .conn-card h4 {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 4px;
+  }
+
+  .conn-card p {
+    font-size: 11.5px;
+    color: var(--text3);
+    line-height: 1.55;
+  }
+
+  /* DELUXE BANNER */
+  .deluxe-banner {
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.18);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 1.2rem 0.5rem;
+    font-size: 12px;
+    color: #fcd34d;
+    line-height: 1.5;
+  }
+
+  /* SCROLL TOP HINT */
+  .scroll-hint {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text3);
+    padding: 0.5rem 0 0;
+    letter-spacing: 0.05em;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 1.5rem 1rem 3rem;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.05em;
+  }
+
+  footer span {
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="star-badge">✦ The Complete Deep Dive ✦</div>
+  <h1>Olivia Rodrigo</h1>
+  <p class="tagline">pop princess · guitar girlboss · certified sad girl</p>
+  <p class="born-tag">born february 20, 2003 · temecula, california</p>
+  <div class="stats-row">
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Studio Albums</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Grammys Won</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">$209M</span>
+      <span class="stat-label">GUTS Tour Gross</span>
+    </div>
+  </div>
+</header>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <button class="active" onclick="show('bio', this)">Bio</button>
+    <button onclick="show('disco', this)">Discography</button>
+    <button onclick="show('dating', this)">Dating</button>
+    <button onclick="show('theories', this)">Fan Theories</button>
+    <button onclick="show('connections', this)">Connections</button>
+    <button onclick="show('funfacts', this)">Fun Facts</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- BIO -->
+<div id="bio" class="section active">
+  <div class="section-header">
+    <h2>Who is Olivia?</h2>
+    <p>Background, heritage, rise to fame, and what makes her tick</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-purple">Origins</span>
+    <h3>Early life & background</h3>
+    <p>Olivia Isabel Rodrigo is of Filipino and Irish-German descent — her father Ronald is Filipino-American and her mother Jennifer is of Irish and German heritage. She grew up in Temecula, CA, taught herself guitar at age 12 via YouTube tutorials, and started in local theater before landing her first Disney role.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-teal">Disney Era</span>
+    <h3>Bizaardvark (2016) → HSMTMTS (2019)</h3>
+    <p>She played Paige Olvera alongside Madison Hu in Bizaardvark, then landed the lead role of Nini Salazar-Roberts on Disney+'s High School Musical: The Musical: The Series. The show is where she met Joshua Bassett and contributed "All I Want" to the soundtrack — her first charting single. She departed in Season 3 to go full-time on music.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-gold">Overnight Superstar</span>
+    <h3>January 8, 2021 — everything changed</h3>
+    <p>"drivers license" dropped and broke Spotify's record for most streams in a single day — 15.17 million. Taylor Swift publicly endorsed it. SOUR debuted at #1 in 16 countries. At the 2022 Grammys, she swept Best New Artist, Best Pop Vocal Album, and Best Pop Solo Performance at just 18 years old.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-pink">Activism</span>
+    <h3>Fund 4 Good</h3>
+    <p>Olivia runs Fund 4 Good, her nonprofit donating proceeds from ticket sales to organizations supporting girls' education and reproductive rights. In 2021 she famously brought COVID-19 vaccine scientist Dr. Kizzmekia Corbett and activist Olivia Julianna to the White House to encourage young people to get vaccinated.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-purple">Record Books</span>
+    <h3>Milestones worth knowing</h3>
+    <p>Youngest solo artist to claim the UK Chart Double at 18 yrs 3 months (SOUR #1 albums + good 4 u #1 singles simultaneously). GUTS World Tour was the highest-grossing tour by any artist born in the 21st century — 101 shows, 1.6M tickets, $209.1M. The GUTS World Tour Netflix concert film dropped October 29, 2024.</p>
+  </div>
+</div>
+
+<!-- DISCOGRAPHY -->
+<div id="disco" class="section">
+  <div class="section-header">
+    <h2>Discography</h2>
+    <p>Three studio albums, a live record, and a legacy of breakup anthems</p>
+  </div>
+
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-pink" style="margin-bottom:6px">May 21, 2021</div>
+        <div class="album-title">SOUR</div>
+        <div class="album-meta">Alt-pop · bedroom pop · pop rock · 11 tracks · 34:46<br>Producer: Dan Nigro · Label: Geffen Records</div>
+      </div>
+      <div class="album-year">2021</div>
+    </div>
+    <div class="track">
+      <span class="track-num">1</span>
+      <div><div class="track-name">brutal</div><div class="track-note">Gen Z angst anthem, Paramore-inspired guitar crunch. SOUR's mission statement.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">2</span>
+      <div><div class="track-name">traitor</div><div class="track-note">Arguably the emotional peak — accuses an ex of emotional cheating before the relationship ended.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">drivers license</div><div class="track-note">Record-breaking debut single. 15.17M Spotify streams on day one. The song that launched everything.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">4</span>
+      <div><div class="track-name">1 step forward, 3 steps back</div><div class="track-note">Interpolates Taylor Swift's "New Year's Day" from reputation — TS receives a writing credit on the track.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">deja vu</div><div class="track-note">Second single. Quirky, synthy, brilliant. Interpolates Swift's "Cruel Summer" melody; TS gets a writing credit here too.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">good 4 u</div><div class="track-note">#1 smash hit. Misery Business energy. MV features a Princess Diaries easter egg fans spotted on TikTok.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">7</span>
+      <div><div class="track-name">enough for you</div><div class="track-note">Fan-favorite deep cut. Devastatingly personal — about never being enough for someone who took you for granted.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">8</span>
+      <div><div class="track-name">happier</div><div class="track-note">Bittersweet "I want you to be happy, just not with her" ballad. Cinematic and restrained.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">9</span>
+      <div><div class="track-name">favorite crime</div><div class="track-note">TikTok fan fave, cinematic ballad about complicity in a doomed love.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">10</span>
+      <div><div class="track-name">enough for you (reprise idea) → hope ur ok</div><div class="track-note">Rare non-romantic closer — empathy for friends in hard situations. Shows Olivia's emotional range beyond heartbreak.</div></div>
+    </div>
+  </div>
+
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-purple" style="margin-bottom:6px">Sep 8, 2023</div>
+        <div class="album-title">GUTS</div>
+        <div class="album-meta">Pop-rock · alt-pop · indie pop · 12 tracks + 5 deluxe<br>Producer: Dan Nigro · Label: Geffen Records · Named after a Clueless quote</div>
+      </div>
+      <div class="album-year">2023</div>
+    </div>
+    <div class="track">
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">vampire</div><div class="track-note">Lead single, #1 Hot 100. Fan theories point to Zack Bia or, controversially, Taylor Swift.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">bad idea right?</div><div class="track-note">MV features real-life besties Tate McRae, Madison Hu & Iris Apatow. Slushy was plastic bits, not ice.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">3</span>
+      <div><div class="track-name">vampire (alt listing) → vampire</div><div class="track-note">See above ★</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">3</span>
+      <div><div class="track-name">lacy</div><div class="track-note">Platinum certified. Fans debate: is "Lacy" a real person (possibly Sabrina Carpenter?) or an idealized woman Olivia envies?</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">4</span>
+      <div><div class="track-name">ballad of a homeschooled girl</div><div class="track-note">Social anxiety anthem. Gold certified. "Every time I step outside it's like I forgot how to talk."</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">5</span>
+      <div><div class="track-name">making the bed</div><div class="track-note">Self-reflective introspection. Its lyric video hid an Easter egg revealing the GUTS World Tour's first show date.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">6</span>
+      <div><div class="track-name">logical</div><div class="track-note">Haunting — knowing a relationship is bad, but staying anyway. One of GUTS' most devastating cuts.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">get him back!</div><div class="track-note">Double meaning banger — "I want him back" + "I want to get him back" (revenge). Pure chaotic energy.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">8</span>
+      <div><div class="track-name">lacy</div><div class="track-note">↑ track 3</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">9</span>
+      <div><div class="track-name">all-american b*tch</div><div class="track-note">Feminist opening track (sequenced first in the album). Rage about impossible standards placed on women.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">10</span>
+      <div><div class="track-name">the grudge</div><div class="track-note">About forgiving someone who exploited a power imbalance. Fan theory: Adam Faze (six-year age gap, industry position).</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">11</span>
+      <div><div class="track-name">love is embarrassing</div><div class="track-note">Self-drag about chasing the wrong people. Irreverent and darkly funny.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">12</span>
+      <div><div class="track-name">teenage dream</div><div class="track-note">Devastating closer about fearing you've peaked at 20. Fan-favorite live emotional moment every night on tour.</div></div>
+    </div>
+    <div class="deluxe-banner">
+      ✦ GUTS (spilled) deluxe — March 2024: so american (Louis Partridge love song) · obsessed · scared of my guitar · stranger · girl i've always been · covers: bathwater (No Doubt) · who's sorry now? (Connie Francis)
+    </div>
+  </div>
+
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-gold" style="margin-bottom:6px">Jun 12, 2026</div>
+        <div class="album-title">you seem pretty sad for a girl so in love</div>
+        <div class="album-meta">Third studio album · Inspired by her time in London<br>Producer: Dan Nigro · Label: Geffen Records</div>
+      </div>
+      <div class="album-year">2026</div>
+    </div>
+    <div class="track">
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">drop dead</div><div class="track-note">Lead single released April 17, 2026. MV filmed at the Palace of Versailles. Packed with Louis Partridge Easter eggs — Pisces/Gemini, Versailles, Guinness, The Cure, the Eurostar. A "lover girl" era begins.</div></div>
+    </div>
+  </div>
+
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-gray" style="margin-bottom:6px">Dec 5, 2025</div>
+        <div class="album-title">Live from Glastonbury (a BBC Recording)</div>
+        <div class="album-meta">Live album · Recorded June 29, 2025 · 84:45 · Interscope</div>
+      </div>
+      <div class="album-year">Live</div>
+    </div>
+    <div class="track">
+      <span class="track-num">★</span>
+      <div><div class="track-name">Full Glastonbury headline set</div><div class="track-note">Olivia headlined one of the world's biggest festivals at 22. Includes duets of The Cure's "Friday I'm in Love" and "Just Like Heaven" — performed live while Louis Partridge watched from the crowd.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DATING HISTORY -->
+<div id="dating" class="section">
+  <div class="section-header">
+    <h2>Dating History</h2>
+    <p>The muses behind the music — every relationship, rumored and confirmed</p>
+  </div>
+
+  <div class="card" style="padding:0 1.2rem">
+    <div style="padding-top:1rem">
+
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="t-dot"></div><div class="t-line"></div></div>
+        <div>
+          <div class="timeline-year">~2018–2019</div>
+          <div class="timeline-content">
+            <h4>Ethan Wacker</h4>
+            <p>Fellow Disney actor. Their relationship was brief and largely pre-fame. Very little public detail is known — considered her earliest acknowledged relationship before HSMTMTS.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="t-dot"></div><div class="t-line"></div></div>
+        <div>
+          <div class="timeline-year">~2019–2020</div>
+          <div class="timeline-content">
+            <h4>Joshua Bassett — rumored, never confirmed</h4>
+            <p>Co-star on HSMTMTS. Played her on-screen love interest Ricky. They were close on set and fans theorized a real romance. Reportedly broke up in summer 2020 when Joshua allegedly moved on with Sabrina Carpenter while things were still ongoing — which inspired "drivers license," "traitor," "deja vu," and "enough for you." Joshua later addressed the drama in GQ: "Why don't we focus on these women for who they are? Let's focus on the art." The saga of all sagas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="t-dot"></div><div class="t-line"></div></div>
+        <div>
+          <div class="timeline-year">Jun 2021–Feb 2022</div>
+          <div class="timeline-content">
+            <h4>Adam Faze — music producer</h4>
+            <p>Six years older than Olivia. First spotted at the Space Jam 2 premiere where she introduced him as her boyfriend. Photographed packing on PDA in LA in late 2021. Split reported Feb 2022 — "they've been over for a bit now." Fans suspect he may be referenced in "the grudge" given the age gap and power-dynamic lyrics. Neither has ever publicly discussed it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="t-dot"></div><div class="t-line"></div></div>
+        <div>
+          <div class="timeline-year">Feb–Aug 2022</div>
+          <div class="timeline-content">
+            <h4>Zack Bia — DJ & music exec</h4>
+            <p>Seven years older than Olivia. Met at a Super Bowl afterparty he was DJing. Six months of casual dating that "sort of fizzled." Fan-favorite "vampire" theory: "six months of torture" matches exactly, "you only come out at night" fits a DJ lifestyle, and "girls your age know better" references the seven-year age gap. Zack has denied any drama publicly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-line"><div class="t-dot"></div><div class="t-line"></div></div>
+        <div>
+          <div class="timeline-year">Oct 2023–Dec 2025</div>
+          <div class="timeline-content">
+            <h4>Louis Partridge — actor (Enola Holmes)</h4>
+            <p>Born the same year as Olivia (Gemini to her Pisces). First spotted together in London in October 2023. Made their red carpet debut at Venice Film Festival in August 2024. Louis attended the entire GUTS World Tour, photographed looking "so proud" at every show. Olivia wrote "so american" about him. Split reported December 2025 — careers made things difficult and he reportedly "didn't want to be tied down." The upcoming album is heavily about this chapter.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item" style="margin-bottom:1rem">
+        <div class="timeline-line"><div class="t-dot" style="background:var(--text3)"></div></div>
+        <div>
+          <div class="timeline-year">2026 (rumored)</div>
+          <div class="timeline-content">
+            <h4>Cameron Winter — frontman of indie band Geese</h4>
+            <p>Photographed on a dinner date in LA in April 2026 — shortly after "drop dead" dropped. Fans quickly began speculating. Nothing confirmed.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FAN THEORIES -->
+<div id="theories" class="section">
+  <div class="section-header">
+    <h2>Fan Theories</h2>
+    <p>The Livie detective agency never sleeps — decoded</p>
+  </div>
+
+  <div class="sub-label">SOUR era theories</div>
+
+  <div class="theory">
+    <h4>"drivers license" — about Joshua moving on with Sabrina Carpenter</h4>
+    <p>The blonde girl she drives past? Fan theory: Sabrina Carpenter, who is blonde. Both Joshua and Sabrina released what fans read as response tracks ("Lie Lie Lie" and "Skin"). The "older" reference may nod to Sabrina being slightly older than Olivia at the time. Joshua never confirmed any of it, and Olivia's anguish felt deeply real regardless.</p>
+  </div>
+
+  <div class="theory">
+    <h4>"deja vu" — Joshua recycling their memories with Sabrina</h4>
+    <p>"Do you get deja vu when she's with you?" — lines referencing strawberry ice cream and Bruce Springsteen are widely read as Olivia accusing Joshua of re-using their private, intimate experiences and inside jokes with his new girlfriend. Absolutely devastating if true.</p>
+  </div>
+
+  <div class="theory">
+    <h4>"traitor" — the most explicit Joshua/Sabrina song</h4>
+    <p>"A month before you said you needed space" + "I gave you the benefit of the doubt" → fans believe this describes Joshua beginning something with Sabrina before he and Olivia were officially done. The word "traitor" is doing a lot of work here.</p>
+  </div>
+
+  <div class="theory">
+    <h4>"1 step forward, 3 steps back" — a hot-and-cold early relationship</h4>
+    <p>Walking on eggshells, never knowing where you stand. Fans believe this is about an early Joshua situationship — or possibly Ethan Wacker. The Taylor Swift interpolation ("New Year's Day" from reputation) earned TS a writing credit and gave the song a bittersweet, late-night quality.</p>
+  </div>
+
+  <div class="sub-label">GUTS era theories</div>
+
+  <div class="theory">
+    <h4>"vampire" — Zack Bia or Taylor Swift?</h4>
+    <p><em>The Zack camp:</em> "six months of torture" matches their exact timeline, "you only come out at night" fits a DJ's nightlife schedule, the 7-year age gap matches "girls your age know better." <em>The Taylor camp:</em> "fame f*cker, bleeding me dry" felt pointed after Taylor added Sabrina to the Eras Tour; some fans read "bloodsucker" as a mentor-turned-vampire. Olivia has firmly said she "never wants to say who songs are about" and that it's about "self-realization." Make of that what you will.</p>
+  </div>
+
+  <div class="theory">
+    <h4>"lacy" — female admiration, envy, or a real person?</h4>
+    <p>Fans are deeply split. Some think "Lacy" is a real woman Olivia admires and envies (the leading theory: Sabrina Carpenter — dainty, pretty, effortlessly likable). Others think it's a fictional composite of idealized femininity that Olivia feels she'll never measure up to. The name "Lacy" has never been confirmed as anyone specific. The ambiguity is the point.</p>
+  </div>
+
+  <div class="theory">
+    <h4>"the grudge" — power imbalance with an older ex</h4>
+    <p>"How do I forgive you / When you make it so clear / You feel no remorse?" + themes of being young and taken advantage of → fans strongly believe this is about Adam Faze, who was six years older and had significant music-industry power. The emotional exploitation framing fits uncomfortably well.</p>
+  </div>
+
+  <div class="theory">
+    <h4>"so american" (deluxe) — the confirmed Louis love song</h4>
+    <p>Olivia described it as a "London vibes" love song. "Oh God, I'm gonna marry him / If he keeps this shit up." Louis attended every single show on the GUTS World Tour. Fans were absolutely feral about this one — and retrospectively heartbroken given the December 2025 breakup.</p>
+  </div>
+
+  <div class="sub-label">New album theories (2026)</div>
+
+  <div class="theory">
+    <h4>"drop dead" — the Louis Partridge masterclass in Easter eggs</h4>
+    <p>Fan evidence stacking up: (1) "Pisces and a Gemini" — Olivia is a Pisces (Feb 20), Louis is a Gemini (Jun 3). (2) "Angel on the walls of Versailles" — Louis = Louis XIV, king of Versailles. (3) "Never finished that beer" → Louis starred in Netflix's House of Guinness in 2025. (4) References The Cure's "Just Like Heaven" — the exact song Olivia performed at Glastonbury 2025 while Louis watched from the crowd. (5) "Taking that Eurostar to France" — she spent extensive time in London with him. (6) The album cover art resembles a Fragonard Rococo painting that Louis himself posted in a photo dump. Coincidence? Livies say absolutely not.</p>
+  </div>
+</div>
+
+<!-- CONNECTIONS -->
+<div id="connections" class="section">
+  <div class="section-header">
+    <h2>Connections</h2>
+    <p>Her world beyond the breakup songs — friendships, feuds, and influences</p>
+  </div>
+
+  <div class="sub-label">Her real besties</div>
+
+  <div class="card" style="padding:0.5rem 1.2rem">
+    <div class="person-card">
+      <div class="avatar" style="background:rgba(244,114,182,0.12);color:#f9a8d4">TM</div>
+      <div>
+        <h4>Tate McRae — close friend & peer</h4>
+        <p>Fellow pop singer-songwriter and genuine BFF. Featured in the "bad idea right?" MV doing choreography. They're regularly spotted hanging out IRL and championing each other's music publicly.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="avatar" style="background:rgba(167,139,250,0.12);color:var(--lilac)">MH</div>
+      <div>
+        <h4>Madison Hu — childhood bestie</h4>
+        <p>Co-star from Bizaardvark, where they played best friends on-screen. One of Olivia's closest real-life friends since childhood. Also featured in the "bad idea right?" MV as part of the squad.</p>
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="avatar" style="background:rgba(45,212,191,0.1);color:#5eead4">IA</div>
+      <div>
+        <h4>Iris Apatow — close friend</h4>
+        <p>Actress and daughter of director Judd Apatow. Part of Olivia's core inner circle. Also appeared in the "bad idea right?" MV as one of the crew.</p>
+      </div>
+    </div>
+    <div class="person-card" style="border-bottom:none">
+      <div class="avatar" style="background:rgba(251,191,36,0.1);color:#fcd34d">DN</div>
+      <div>
+        <h4>Dan Nigro — creative soulmate</h4>
+        <p>Her producer and primary co-writer across SOUR, GUTS, and the new album. Before Olivia, he was a relative unknown. She made him one of pop's most in-demand producers. They're often described as genuinely inseparable creative partners.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-label">The Taylor Swift saga</div>
+  <div class="card">
+    <p>Taylor championed Olivia early — publicly praised "drivers license," sent her a handwritten note and a ring she wore while writing Red. Olivia interpolated two Swift songs on SOUR, earning Taylor writing credits on both. Things got complicated when Taylor added Sabrina Carpenter to the Eras Tour in 2023. They were seated near each other at the 2023 Grammys but didn't interact. By the 2024 Grammys, Taylor was visibly cheering for Olivia and singing along to "vampire" during her performance. Olivia has firmly denied "vampire" is about Taylor. The friendship appears intact but more private now.</p>
+  </div>
+
+  <div class="sub-label">The Sabrina Carpenter chapter</div>
+  <div class="card">
+    <p>The internet-famous love triangle: Joshua Bassett allegedly moved on with Sabrina while still in some form of relationship with Olivia. Both women released songs fans read as responding to each other (Olivia: "drivers license," "deja vu" / Sabrina: "Skin"). Fan bases went to war. Then at the 2025 Grammys, Olivia walked over to Sabrina's table and they were photographed hugging warmly — one of the most unexpected moments of the year. No collab announced, but fans are manifesting it into existence.</p>
+  </div>
+
+  <div class="sub-label">Artist orbit & influences</div>
+  <div class="conn-grid">
+    <div class="conn-card">
+      <h4>Paramore / Hayley Williams</h4>
+      <p>Massive influence on SOUR and GUTS's pop-punk energy. "brutal" is essentially a Paramore love letter. Hayley has publicly praised Olivia.</p>
+    </div>
+    <div class="conn-card">
+      <h4>Billie Eilish</h4>
+      <p>Fellow Gen Z pop phenomenon and Grammy peer. The two frequently share award-show moments and exist in the same cultural conversation.</p>
+    </div>
+    <div class="conn-card">
+      <h4>Chappell Roan</h4>
+      <p>Opened for Olivia on the GUTS World Tour. Their mutual admiration helped launch Chappell's mainstream breakthrough.</p>
+    </div>
+    <div class="conn-card">
+      <h4>PinkPantheress</h4>
+      <p>Also a GUTS tour opener. Both represent a hyper-online new wave of pop that blends nostalgia with Gen Z sensibility.</p>
+    </div>
+    <div class="conn-card">
+      <h4>Beabadoobee</h4>
+      <p>Another GUTS tour opener and influence on Olivia's bedroom-pop guitar-driven side. Mutual respect in the indie-pop world.</p>
+    </div>
+    <div class="conn-card">
+      <h4>The Cure</h4>
+      <p>She covered "Friday I'm in Love" and "Just Like Heaven" at Glastonbury 2025. Robert Smith's influence shows up across her discography's moodier cuts.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FUN FACTS -->
+<div id="funfacts" class="section">
+  <div class="section-header">
+    <h2>Fun Facts & Trivia</h2>
+    <p>The deep cuts of Olivia lore that Livies live for</p>
+  </div>
+
+  <div class="card" style="padding:0.5rem 1.2rem">
+    <div class="fact-item">
+      <span class="fact-icon">🎸</span>
+      <p class="fact-text"><strong>"drivers license" was written in one night in 2020</strong> — she was crying in her childhood bedroom and turned it into a record-breaking debut single. The most relatable origin story imaginable.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🎥</span>
+      <p class="fact-text"><strong>She taught herself guitar at age 12 via YouTube tutorials.</strong> No formal lessons — pure self-taught grit that became the foundation of her entire songwriting voice.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🏆</span>
+      <p class="fact-text"><strong>Youngest solo artist to claim the UK Chart Double</strong> — at 18 years and 3 months she simultaneously held #1 on both the UK Albums Chart (SOUR) and UK Singles Chart (good 4 u).</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">💰</span>
+      <p class="fact-text"><strong>GUTS World Tour: highest-grossing tour by any artist born in the 21st century.</strong> 101 shows, 1.6 million tickets, $209.1 million — and the youngest female solo act to gross over $200M on a first arena tour.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🎬</span>
+      <p class="fact-text"><strong>The "good 4 u" MV contains a Princess Diaries easter egg</strong> — a photo in the video mirrors a scene from the Anne Hathaway film. TikTok users discovered it and the internet had a meltdown.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">📱</span>
+      <p class="fact-text"><strong>She accidentally followed an ex on Instagram while stalking his profile.</strong> Confessed on The Tonight Show in December 2023: "I was stalking my ex as one does. Sue me. And I accidentally followed him 'cause I was following one person, so it was super obvious." Iconic behavior.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🌏</span>
+      <p class="fact-text"><strong>She is of Filipino and Irish-German descent.</strong> She has spoken about incorporating her heritage into her visual work and describes herself as a proud multi-ethnic artist.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🎭</span>
+      <p class="fact-text"><strong>GUTS was named after a line from Clueless (1995).</strong> Signaling her shift from SOUR's raw vulnerability to something bolder, angrier, and more self-assured. A deliberate identity evolution.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🎪</span>
+      <p class="fact-text"><strong>The "bad idea right?" MV slushy was plastic bits, not ice.</strong> The party vomiting scene? Fruit juice. Behind-the-scenes footage from director Petra Collins revealed all the practical filmmaking tricks.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🎸</span>
+      <p class="fact-text"><strong>The "Making the Bed" lyric video hid an Easter egg</strong> — eagle-eyed fans spotted the GUTS World Tour's first show date hidden in the video before any official tour announcement was made.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">🌙</span>
+      <p class="fact-text"><strong>She headlined Glastonbury 2025 at just 22 years old.</strong> One of the most prestigious headline slots in music. She duetted The Cure songs live with Louis Partridge watching from the crowd — now immortalized on the BBC live album.</p>
+    </div>
+    <div class="fact-item">
+      <span class="fact-icon">♓</span>
+      <p class="fact-text"><strong>She calls herself a "spicy Pisces"</strong> — it's literally in her Instagram bio. Louis Partridge is a Gemini. She put it in "drop dead." She is never not in her feelings and we love her for it.</p>
+    </div>
+    <div class="fact-item" style="border-bottom:none">
+      <span class="fact-icon">🏛️</span>
+      <p class="fact-text"><strong>"drop dead" was filmed at the Palace of Versailles.</strong> She ran down the palace halls and danced through the halls of one of the world's most famous landmarks for a music video. King behavior only.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>✦ for the livies ✦</p>
+  <p style="margin-top:4px">olivia rodrigo fan deep dive · updated <span>may 2026</span></p>
+</footer>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('#nav button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
