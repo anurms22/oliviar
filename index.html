@@ -158,7 +158,9 @@
   .nav-inner {
     display: flex;
     gap: 0;
+    justify-content: center;
     min-width: max-content;
+    margin: 0 auto;
     padding: 0 0.5rem;
   }
 
@@ -193,9 +195,10 @@
     max-width: 680px;
     margin: 0 auto;
     padding: 1.5rem 1.25rem 4rem;
+    overflow: visible;
   }
 
-  .section { display: none; }
+  .section { display: none; overflow: visible; }
   .section.active { display: block; }
 
   /* SECTION HEADER */
@@ -276,7 +279,7 @@
     border: 1px solid var(--border);
     border-radius: 14px;
     margin-bottom: 1rem;
-    overflow: hidden;
+    overflow: visible; /* must NOT be hidden — kills sticky positioning */
   }
 
   .album-header {
@@ -287,6 +290,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 0.5rem;
+    border-radius: 13px 13px 0 0; /* match card rounding on top */
   }
 
   .album-title {
@@ -542,6 +546,35 @@
     line-height: 1.55;
   }
 
+  /* STICKY ALBUM HEADER */
+  .album-header-sticky {
+    position: sticky;
+    top: 46px;
+    z-index: 50;
+    background: var(--card2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border2);
+    padding: 0.55rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: inset 3px 0 0 var(--purple-600), 0 4px 16px rgba(0,0,0,0.5);
+  }
+
+  .sticky-album-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .sticky-album-year {
+    font-size: 11px;
+    color: var(--text3);
+    margin-left: auto;
+    letter-spacing: 0.05em;
+  }
+
   /* DELUXE BANNER */
   .deluxe-banner {
     background: rgba(251,191,36,0.06);
@@ -554,13 +587,38 @@
     line-height: 1.5;
   }
 
-  /* SCROLL TOP HINT */
-  .scroll-hint {
-    text-align: center;
-    font-size: 11px;
-    color: var(--text3);
-    padding: 0.5rem 0 0;
-    letter-spacing: 0.05em;
+  /* BACK TO TOP BUTTON */
+  #back-to-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.25rem;
+    z-index: 200;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--purple-600);
+    border: 1px solid var(--border2);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(109,40,217,0.45);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+
+  #back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  #back-to-top:hover {
+    background: var(--purple-500);
   }
 
   /* FOOTER */
@@ -605,9 +663,10 @@
   <div class="nav-inner">
     <button class="active" onclick="show('bio', this)">Bio</button>
     <button onclick="show('disco', this)">Discography</button>
+    <button onclick="show('tours', this)">Tours</button>
+    <button onclick="show('connections', this)">Connections</button>
     <button onclick="show('dating', this)">Dating</button>
     <button onclick="show('theories', this)">Fan Theories</button>
-    <button onclick="show('connections', this)">Connections</button>
     <button onclick="show('funfacts', this)">Fun Facts</button>
   </div>
 </nav>
@@ -668,6 +727,7 @@
       </div>
       <div class="album-year">2021</div>
     </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎵 SOUR</span><span class="sticky-album-year">2021 · 11 tracks</span></div>
     <div class="track">
       <span class="track-num">1</span>
       <div><div class="track-name">brutal</div><div class="track-note">Gen Z angst anthem, Paramore-inspired guitar crunch. SOUR's mission statement.</div></div>
@@ -702,11 +762,15 @@
     </div>
     <div class="track">
       <span class="track-num">9</span>
-      <div><div class="track-name">favorite crime</div><div class="track-note">TikTok fan fave, cinematic ballad about complicity in a doomed love.</div></div>
+      <div><div class="track-name">jealousy, jealousy</div><div class="track-note">Social media comparison culture anthem. "I kinda wanna throw my phone across the room." Deeply Gen Z and bitterly relatable.</div></div>
     </div>
     <div class="track">
       <span class="track-num">10</span>
-      <div><div class="track-name">enough for you (reprise idea) → hope ur ok</div><div class="track-note">Rare non-romantic closer — empathy for friends in hard situations. Shows Olivia's emotional range beyond heartbreak.</div></div>
+      <div><div class="track-name">favorite crime</div><div class="track-note">Cinematic ballad about complicity in a doomed love. TikTok fan favorite deep cut.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">11</span>
+      <div><div class="track-name">hope ur ok</div><div class="track-note">Rare non-romantic closer — empathy for friends in hard situations. Shows Olivia's emotional range far beyond heartbreak.</div></div>
     </div>
   </div>
 
@@ -719,32 +783,33 @@
       </div>
       <div class="album-year">2023</div>
     </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎵 GUTS</span><span class="sticky-album-year">2023 · 17 tracks (deluxe)</span></div>
     <div class="track">
-      <span class="track-num track-star">★</span>
-      <div><div class="track-name">vampire</div><div class="track-note">Lead single, #1 Hot 100. Fan theories point to Zack Bia or, controversially, Taylor Swift.</div></div>
+      <span class="track-num">1</span>
+      <div><div class="track-name">all-american b*tch</div><div class="track-note">Explosive opener. Feminist rage about impossible standards placed on women. Sets the whole album's tone in 2 minutes 42 seconds.</div></div>
     </div>
     <div class="track">
       <span class="track-num track-star">★</span>
-      <div><div class="track-name">bad idea right?</div><div class="track-note">MV features real-life besties Tate McRae, Madison Hu & Iris Apatow. Slushy was plastic bits, not ice.</div></div>
+      <div><div class="track-name">bad idea right?</div><div class="track-note">MV features real-life besties Tate McRae, Madison Hu & Iris Apatow. The slushy? Plastic bits, not ice.</div></div>
     </div>
     <div class="track">
-      <span class="track-num">3</span>
-      <div><div class="track-name">vampire (alt listing) → vampire</div><div class="track-note">See above ★</div></div>
-    </div>
-    <div class="track">
-      <span class="track-num">3</span>
-      <div><div class="track-name">lacy</div><div class="track-note">Platinum certified. Fans debate: is "Lacy" a real person (possibly Sabrina Carpenter?) or an idealized woman Olivia envies?</div></div>
+      <span class="track-num track-star">★</span>
+      <div><div class="track-name">vampire</div><div class="track-note">Lead single, #1 Hot 100. Fan theories: Zack Bia (timeline fits perfectly) or, controversially, Taylor Swift.</div></div>
     </div>
     <div class="track">
       <span class="track-num">4</span>
-      <div><div class="track-name">ballad of a homeschooled girl</div><div class="track-note">Social anxiety anthem. Gold certified. "Every time I step outside it's like I forgot how to talk."</div></div>
+      <div><div class="track-name">lacy</div><div class="track-note">Platinum certified. Is "Lacy" a real person (Sabrina Carpenter?) or an idealized woman Olivia envies? The debate never ends.</div></div>
     </div>
     <div class="track">
       <span class="track-num">5</span>
-      <div><div class="track-name">making the bed</div><div class="track-note">Self-reflective introspection. Its lyric video hid an Easter egg revealing the GUTS World Tour's first show date.</div></div>
+      <div><div class="track-name">ballad of a homeschooled girl</div><div class="track-note">Social anxiety anthem. Gold certified. "Every time I step outside it's like I forgot how to talk."</div></div>
     </div>
     <div class="track">
       <span class="track-num">6</span>
+      <div><div class="track-name">making the bed</div><div class="track-note">Self-reflective introspection. Its lyric video hid an Easter egg revealing the GUTS World Tour's first show date.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num">7</span>
       <div><div class="track-name">logical</div><div class="track-note">Haunting — knowing a relationship is bad, but staying anyway. One of GUTS' most devastating cuts.</div></div>
     </div>
     <div class="track">
@@ -752,12 +817,8 @@
       <div><div class="track-name">get him back!</div><div class="track-note">Double meaning banger — "I want him back" + "I want to get him back" (revenge). Pure chaotic energy.</div></div>
     </div>
     <div class="track">
-      <span class="track-num">8</span>
-      <div><div class="track-name">lacy</div><div class="track-note">↑ track 3</div></div>
-    </div>
-    <div class="track">
       <span class="track-num">9</span>
-      <div><div class="track-name">all-american b*tch</div><div class="track-note">Feminist opening track (sequenced first in the album). Rage about impossible standards placed on women.</div></div>
+      <div><div class="track-name">love is embarrassing</div><div class="track-note">Self-drag about chasing the wrong people. Irreverent and darkly funny.</div></div>
     </div>
     <div class="track">
       <span class="track-num">10</span>
@@ -765,14 +826,33 @@
     </div>
     <div class="track">
       <span class="track-num">11</span>
-      <div><div class="track-name">love is embarrassing</div><div class="track-note">Self-drag about chasing the wrong people. Irreverent and darkly funny.</div></div>
+      <div><div class="track-name">pretty isn't pretty</div><div class="track-note">Body image and beauty standard frustration. "I could be the greatest, it ain't pretty." A gut punch of a track.</div></div>
     </div>
     <div class="track">
       <span class="track-num">12</span>
-      <div><div class="track-name">teenage dream</div><div class="track-note">Devastating closer about fearing you've peaked at 20. Fan-favorite live emotional moment every night on tour.</div></div>
+      <div><div class="track-name">teenage dream</div><div class="track-note">Devastating closer about fearing you've peaked at 20. Fan-favorite live emotional moment every single night on tour.</div></div>
     </div>
-    <div class="deluxe-banner">
-      ✦ GUTS (spilled) deluxe — March 2024: so american (Louis Partridge love song) · obsessed · scared of my guitar · stranger · girl i've always been · covers: bathwater (No Doubt) · who's sorry now? (Connie Francis)
+    <div style="background:rgba(251,191,36,0.05);border-top:1px solid rgba(251,191,36,0.15);padding:6px 0 2px">
+    <div class="track">
+      <span class="track-num" style="color:#fcd34d">13</span>
+      <div><div class="track-name" style="color:#fcd34d">obsessed</div><div class="track-note">Deluxe track. Originally a secret hidden on select GUTS vinyls. Katy Perry's "I Kissed a Girl" energy via Charli XCX. A banger.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num" style="color:#fcd34d">14</span>
+      <div><div class="track-name" style="color:#fcd34d">girl i've always been</div><div class="track-note">Deluxe track. Identity anthem — a defiant declaration of selfhood against outside pressures.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num" style="color:#fcd34d">15</span>
+      <div><div class="track-name" style="color:#fcd34d">scared of my guitar</div><div class="track-note">Deluxe track. Raw and acoustic-feeling. About creative fear and the pressure of being a songwriter at her level.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num" style="color:#fcd34d">16</span>
+      <div><div class="track-name" style="color:#fcd34d">stranger</div><div class="track-note">Deluxe track. Haunting reflection on feeling like a stranger to yourself after a relationship ends.</div></div>
+    </div>
+    <div class="track">
+      <span class="track-num" style="color:#fcd34d">17</span>
+      <div><div class="track-name" style="color:#fcd34d">so american</div><div class="track-note">Deluxe closer. The confirmed Louis Partridge love song — "Oh God, I'm gonna marry him." London vibes, Gemini energy, total devastation in retrospect.</div></div>
+    </div>
     </div>
   </div>
 
@@ -785,6 +865,7 @@
       </div>
       <div class="album-year">2026</div>
     </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎵 you seem pretty sad for a girl so in love</span><span class="sticky-album-year">2026</span></div>
     <div class="track">
       <span class="track-num track-star">★</span>
       <div><div class="track-name">drop dead</div><div class="track-note">Lead single released April 17, 2026. MV filmed at the Palace of Versailles. Packed with Louis Partridge Easter eggs — Pisces/Gemini, Versailles, Guinness, The Cure, the Eurostar. A "lover girl" era begins.</div></div>
@@ -800,10 +881,273 @@
       </div>
       <div class="album-year">Live</div>
     </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎵 Live from Glastonbury</span><span class="sticky-album-year">2025 · BBC Recording</span></div>
     <div class="track">
       <span class="track-num">★</span>
       <div><div class="track-name">Full Glastonbury headline set</div><div class="track-note">Olivia headlined one of the world's biggest festivals at 22. Includes duets of The Cure's "Friday I'm in Love" and "Just Like Heaven" — performed live while Louis Partridge watched from the crowd.</div></div>
     </div>
+  </div>
+
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-teal" style="margin-bottom:6px">2020 – 2023</div>
+        <div class="album-title">Soundtracks, Singles & Other Songs</div>
+        <div class="album-meta">Non-album tracks · HSMTMTS contributions · Standalone singles · Collaborations</div>
+      </div>
+      <div class="album-year" style="font-size:1rem">+</div>
+    </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎵 Soundtracks & Singles</span><span class="sticky-album-year">non-album</span></div>
+
+    <div style="padding:6px 1.2rem 0"><div class="sub-label" style="margin-top:0.4rem">HSMTMTS Season 1 (2019–2020)</div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">All I Want</div><div class="track-note">Her breakout song — written for the show and went viral on TikTok. Peaked #90 Hot 100. The DM that started her friendship with Conan Gray. Later added to the SOUR Tour setlist.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">Out of the Old</div><div class="track-note">Original song written for Season 1's soundtrack, released 2020.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">Wondering</div><div class="track-note">Season 1 soundtrack contribution, 2020.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">What I've Been Looking For</div><div class="track-note">Cover of the original High School Musical song, performed for the Season 1 soundtrack.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">Start of Something New</div><div class="track-note">Another HSM cover for the Season 1 soundtrack.</div></div></div>
+
+    <div style="padding:6px 1.2rem 0"><div class="sub-label" style="margin-top:0.4rem">HSMTMTS Holiday Special (2020)</div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">River (cover)</div><div class="track-note">Joni Mitchell cover performed for the Holiday Special soundtrack, 2020. A fan-favorite showcase of her vocal range.</div></div></div>
+
+    <div style="padding:6px 1.2rem 0"><div class="sub-label" style="margin-top:0.4rem">HSMTMTS Season 2 (2021)</div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">The Rose Song</div><div class="track-note">Original track written for Season 2, released June 2021 — Nini's emotional centerpiece that season.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">Even When / The Best Part</div><div class="track-note">Season 2 soundtrack contribution, 2021.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">YAC Alma Mater</div><div class="track-note">Season 2 ensemble track, 2021.</div></div></div>
+
+    <div style="padding:6px 1.2rem 0"><div class="sub-label" style="margin-top:0.4rem">HSMTMTS Season 3 (2022)</div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">You Never Know</div><div class="track-note">Her final contribution to the HSMTMTS soundtrack before departing the show to focus on music full-time.</div></div></div>
+
+    <div style="padding:6px 1.2rem 0"><div class="sub-label" style="margin-top:0.4rem">Standalone singles & collaborations</div></div>
+    <div class="track"><span class="track-num track-star">★</span><div><div class="track-name">Can't Catch Me Now — Nov 2023</div><div class="track-note">Written for The Hunger Games: The Ballad of Songbirds & Snakes soundtrack. Haunting, cinematic, and totally distinct from anything on GUTS. Added to the GUTS World Tour setlist from the Miami show onward — crowds knew every word immediately.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">Lacy / Stick Season (BBC Radio 1 Live Lounge) — with Noah Kahan</div><div class="track-note">Joint Live Lounge session — Olivia covered Noah's "Stick Season" and he covered her "Lacy." Noah later surprised her at Madison Square Garden on the GUTS tour.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">Olivia Rodrigo & Weezer Live @ Lolla</div><div class="track-note">A live collaboration with Weezer at Lollapalooza — a surprise that showed her pop-rock roots in full.</div></div></div>
+    <div class="track"><span class="track-num">–</span><div><div class="track-name">Friday I'm in Love / Just Like Heaven (The Cure covers) — Jun 2025</div><div class="track-note">Performed live at Glastonbury 2025 and released on the BBC live album. Robert Smith-approved energy while Louis Partridge watched from the crowd. "Friday I'm in Love" charted #1 on the UK Physical Singles Chart.</div></div></div>
+  </div>
+</div>
+
+<!-- TOURS -->
+<div id="tours" class="section">
+  <div class="section-header">
+    <h2>Tours</h2>
+    <p>Every concert, every city, every unforgettable guest moment</p>
+  </div>
+
+  <!-- SOUR TOUR -->
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-pink" style="margin-bottom:6px">Apr 2 – Jul 7, 2022</div>
+        <div class="album-title">SOUR Tour</div>
+        <div class="album-meta">Debut headlining tour · 49 shows · North America + Europe<br>Venues: theaters & mid-size arenas · Produced by Live Nation</div>
+      </div>
+      <div class="album-year" style="font-size:1.1rem">2022</div>
+    </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎤 SOUR Tour</span><span class="sticky-album-year">2022 · 49 shows</span></div>
+
+    <div style="padding:0.75rem 1.2rem 0.5rem">
+      <div class="sub-label" style="margin-top:0">Openers</div>
+      <p style="font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:0.75rem">Gracie Abrams (North America Apr 2–23) · Holly Humberstone (Apr 26–May 25) · Baby Queen (European leg) · Chappell Roan (select dates)</p>
+
+      <div class="sub-label">North America</div>
+    </div>
+
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 2</span><div><div class="track-name">San Francisco, CA — Bill Graham Civic Auditorium</div><div class="track-note">Originally the tour opener; rescheduled from its planned date due to the Grammy Awards moving to Apr 3</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 5</span><div><div class="track-name">Portland, OR — Theater of the Clouds</div><div class="track-note">Official opening night of the tour</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 6</span><div><div class="track-name">Seattle, WA — WAMU Theater</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 7</span><div><div class="track-name">Vancouver, BC — Doug Mitchell Thunderbird Sports Centre</div><div class="track-note">⭐ Special guest: Conan Gray joined onstage to perform Katy Perry's "The One That Got Away" — one of the most beloved moments of the whole tour</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 9</span><div><div class="track-name">Salt Lake City, UT — UCCU Center</div><div class="track-note">"All I Want" (from HSMTMTS) added to the setlist starting this show</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 11–12</span><div><div class="track-name">Denver, CO — Mission Ballroom (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 14</span><div><div class="track-name">Minneapolis, MN — The Armory</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 15–16</span><div><div class="track-name">Chicago, IL — Aragon Ballroom (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 19</span><div><div class="track-name">Milwaukee, WI — Eagles Ballroom</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 20</span><div><div class="track-name">Chesterfield, MO — The Factory</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 22</span><div><div class="track-name">Cincinnati, OH — Andrew J. Brady ICON Music Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 23</span><div><div class="track-name">Detroit, MI — Masonic Temple Theatre</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 26–27</span><div><div class="track-name">New York, NY — Radio City Music Hall (2 nights)</div><div class="track-note">⭐ Special guest: Avril Lavigne joined on the first NY night to perform "Complicated" — the crowd went absolutely berserk. "Seether" (No Doubt cover) replaced with "Just a Girl" starting from Philadelphia onward</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 29–30</span><div><div class="track-name">Toronto, ON — Massey Hall (2 nights)</div><div class="track-note">⭐ Special guest: Avril Lavigne again on the first Toronto night for "Complicated"</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 3</span><div><div class="track-name">Boston, MA — Roadrunner</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 4</span><div><div class="track-name">Washington, DC — The Anthem</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 6</span><div><div class="track-name">Philadelphia, PA — The Met Philadelphia</div><div class="track-note">"Just a Girl" (No Doubt) replaces "Seether" in the setlist from here on</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 8</span><div><div class="track-name">Atlanta, GA — Coca-Cola Roxy</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 10</span><div><div class="track-name">Nashville, TN — Ryman Auditorium</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 12</span><div><div class="track-name">New Orleans, LA — Orpheum Theater</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 14–15</span><div><div class="track-name">Dallas, TX — The Pavilion at Toyota Music Factory (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 17</span><div><div class="track-name">Phoenix, AZ — Arizona Financial Theatre</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 19–20</span><div><div class="track-name">Los Angeles, CA — Greek Theatre (2 nights)</div><div class="track-note">Home state finale of the North American leg — emotional shows</div></div></div>
+
+    <div style="padding:0.5rem 1.2rem 0">
+      <div class="sub-label">Europe & UK</div>
+    </div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 7</span><div><div class="track-name">Amsterdam, Netherlands — AFAS Live</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 9</span><div><div class="track-name">Copenhagen, Denmark — Royal Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 11</span><div><div class="track-name">Stockholm, Sweden — Avicii Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 13</span><div><div class="track-name">Berlin, Germany — Velodrom</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 15</span><div><div class="track-name">Cologne, Germany — Lanxess Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 17</span><div><div class="track-name">Zurich, Switzerland — Hallenstadion</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 19</span><div><div class="track-name">Paris, France — Accor Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 21</span><div><div class="track-name">Dublin, Ireland — 3Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 23</span><div><div class="track-name">Glasgow, Scotland — OVO Hydro</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 25</span><div><div class="track-name">Glastonbury Festival, UK</div><div class="track-note">⭐ Festival appearance — her first ever Glastonbury performance, three years before she'd headline it</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 28–29</span><div><div class="track-name">Birmingham, UK — Utilita Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 1–2</span><div><div class="track-name">Manchester, UK — AO Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 4–5</span><div><div class="track-name">London, UK — Eventim Apollo (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 7</span><div><div class="track-name">London, UK — Eventim Apollo</div><div class="track-note">Tour finale. 49 shows, sold out everywhere. Critics called it one of the best debut tours in recent memory.</div></div></div>
+
+    <div style="background:rgba(167,139,250,0.07);border-top:1px solid var(--border);padding:0.85rem 1.2rem;margin-top:4px">
+      <p style="font-size:12px;color:var(--text3);line-height:1.6"><strong style="color:var(--text2)">Notable facts:</strong> Olivia deliberately chose theaters over arenas — "I don't think I should skip any steps." Tickets sold out in minutes and some resold for $9,000+. She performed the entirety of SOUR at every show plus covers and surprises. The Vancouver Conan Gray moment and the NYC Avril Lavigne surprise became the two most iconic moments of the run.</p>
+    </div>
+  </div>
+
+  <!-- GUTS WORLD TOUR -->
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-purple" style="margin-bottom:6px">Feb 23 – Oct 22, 2024</div>
+        <div class="album-title">GUTS World Tour</div>
+        <div class="album-meta">Second headlining tour · 95 arena shows · North America, Europe, Asia & Australia<br>Grossed $184.6M · 1.4M tickets · Highest-grossing tour by any 21st-century artist</div>
+      </div>
+      <div class="album-year" style="font-size:1.1rem">2024</div>
+    </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎤 GUTS World Tour</span><span class="sticky-album-year">2024 · 95 shows · $184.6M</span></div>
+
+    <div style="padding:0.75rem 1.2rem 0.5rem">
+      <div class="sub-label" style="margin-top:0">Openers (by leg)</div>
+      <p style="font-size:12px;color:var(--text3);line-height:1.6;margin-bottom:0.75rem">Chappell Roan (North America) · The Breeders (select North America) · Remi Wolf (select) · PinkPantheress (Europe/UK — withdrew due to health) · Benee (Australia/NZ) · Beabadoobee (Asia)</p>
+
+      <div class="sub-label">North America — Leg 1</div>
+    </div>
+
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Feb 23</span><div><div class="track-name">Thousand Palms, CA — Acrisure Arena</div><div class="track-note">⭐ Opening night of her first arena tour — performed on a suspended crescent moon above the crowd, purple electric guitar in hand. The internet broke.</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Feb 24</span><div><div class="track-name">Thousand Palms, CA — Acrisure Arena (night 2)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Feb 26</span><div><div class="track-name">Phoenix, AZ — Footprint Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Feb 28</span><div><div class="track-name">Las Vegas, NV — T-Mobile Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 1–2</span><div><div class="track-name">Los Angeles, CA — Crypto.com Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 5</span><div><div class="track-name">Sacramento, CA — Golden 1 Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 6</span><div><div class="track-name">Miami, FL — Kaseya Center</div><div class="track-note">⭐ "Can't Catch Me Now" (Hunger Games soundtrack) added to the setlist for the first time here — fans lost their minds</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 8</span><div><div class="track-name">Tampa, FL — Amalie Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 10</span><div><div class="track-name">Charlotte, NC — Spectrum Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 12</span><div><div class="track-name">Atlanta, GA — State Farm Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 14</span><div><div class="track-name">Nashville, TN — Bridgestone Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 16</span><div><div class="track-name">St. Louis, MO — Enterprise Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 18–19</span><div><div class="track-name">Chicago, IL — United Center (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 21</span><div><div class="track-name">Minneapolis, MN — Target Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 23</span><div><div class="track-name">Kansas City, MO — T-Mobile Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 25–26</span><div><div class="track-name">Denver, CO — Ball Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 28–29</span><div><div class="track-name">Seattle, WA — Climate Pledge Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 31</span><div><div class="track-name">Portland, OR — Moda Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 2–3</span><div><div class="track-name">San Francisco, CA — Chase Center (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 5–6</span><div><div class="track-name">New York, NY — Madison Square Garden (2 nights)</div><div class="track-note">⭐ First MSG night: Noah Kahan joined Olivia onstage to perform his hit "Stick Season" — a surprise that sent the crowd into orbit</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 8–9</span><div><div class="track-name">Boston, MA — TD Garden (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 11</span><div><div class="track-name">Pittsburgh, PA — PPG Paints Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 13</span><div><div class="track-name">Washington, DC — Capital One Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 15–16</span><div><div class="track-name">Philadelphia, PA — Wells Fargo Center (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 18–19</span><div><div class="track-name">Toronto, ON — Scotiabank Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 22</span><div><div class="track-name">Detroit, MI — Little Caesars Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 24</span><div><div class="track-name">Columbus, OH — Nationwide Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 26</span><div><div class="track-name">Newark, NJ — Prudential Center</div></div></div>
+
+    <div style="padding:0.5rem 1.2rem 0">
+      <div class="sub-label">Europe & UK — Leg 2</div>
+    </div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 30</span><div><div class="track-name">Dublin, Ireland — 3Arena</div><div class="track-note">⭐ European debut of "So American" replacing "Can't Catch Me Now" — fans who knew it was about Louis Partridge screamed every word</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 2–5</span><div><div class="track-name">London, UK — The O2 Arena (4 nights)</div><div class="track-note">Four-night O2 residency — one of the biggest runs of her career. Louis Partridge attended all four nights.</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 7</span><div><div class="track-name">Birmingham, UK — Utilita Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 9–10</span><div><div class="track-name">Glasgow, UK — OVO Hydro (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 13–14</span><div><div class="track-name">Manchester, UK — Co-op Live (2 nights)</div><div class="track-note">Originally postponed due to venue technical issues; rescheduled and added "Lacy," "All I Want," "The Grudge" and "Can't Catch Me Now" back to the setlist for this run</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 16</span><div><div class="track-name">Amsterdam, Netherlands — Ziggo Dome</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 18</span><div><div class="track-name">Brussels, Belgium — Forest National</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 20</span><div><div class="track-name">Frankfurt, Germany — Festhalle</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 22</span><div><div class="track-name">Hamburg, Germany — Barclays Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 24</span><div><div class="track-name">Copenhagen, Denmark — Royal Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 27</span><div><div class="track-name">Stockholm, Sweden — Avicii Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 28</span><div><div class="track-name">Oslo, Norway — Spektrum</div><div class="track-note">Venue upgraded from Oslo Spektrum due to overwhelming demand</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">May 31</span><div><div class="track-name">Berlin, Germany — Uber Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 3</span><div><div class="track-name">Zurich, Switzerland — Hallenstadion</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 5</span><div><div class="track-name">Milan, Italy — Mediolanum Forum</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 7</span><div><div class="track-name">Paris, France — Accor Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 10</span><div><div class="track-name">Barcelona, Spain — Palau Sant Jordi</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 12</span><div><div class="track-name">Madrid, Spain — WiZink Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 14</span><div><div class="track-name">Lisbon, Portugal — Altice Arena</div><div class="track-note">Her first ever performance in Portugal</div></div></div>
+
+    <div style="padding:0.5rem 1.2rem 0">
+      <div class="sub-label">North America — Leg 3</div>
+    </div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 19</span><div><div class="track-name">Philadelphia, PA — Wells Fargo Center</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 21</span><div><div class="track-name">Uncasville, CT — Mohegan Sun Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 23</span><div><div class="track-name">Washington, DC — Capital One Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 24</span><div><div class="track-name">Lexington, KY — Rupp Arena</div><div class="track-note">⭐ Tyler Childers joined Olivia onstage to perform his song "All Your'n" — a surprise collab that sent the internet into a frenzy</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 26</span><div><div class="track-name">Columbus, OH — Nationwide Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 28–29</span><div><div class="track-name">Chicago, IL — United Center (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Aug 1</span><div><div class="track-name">Edmonton, AB — Rogers Place</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Aug 3</span><div><div class="track-name">Vancouver, BC — Rogers Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Aug 5–6</span><div><div class="track-name">Salt Lake City, UT — Delta Center (2 nights)</div><div class="track-note">PinkPantheress confirmed as no longer opening after Denver — health issues forced her withdrawal from remaining dates</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Aug 8–9</span><div><div class="track-name">San Francisco, CA — Chase Center (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Aug 13</span><div><div class="track-name">Los Angeles, CA — Kia Forum</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Aug 14</span><div><div class="track-name">Los Angeles, CA — Kia Forum</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Aug 20–21</span><div><div class="track-name">Inglewood, CA — Intuit Dome (2 nights)</div><div class="track-note">⭐ Aug 20: Chappell Roan joined Olivia onstage to perform "HOT TO GO!" — the show was filmed for the Netflix concert special. Both nights recorded. Netflix released the film Oct 29, 2024.</div></div></div>
+
+    <div style="padding:0.5rem 1.2rem 0">
+      <div class="sub-label">Asia & Australia — Leg 4</div>
+    </div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Oct 5</span><div><div class="track-name">Manila, Philippines — Philippine Arena</div><div class="track-note">Biggest show of the tour — attendance of 50,000. Her largest crowd ever at that point.</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Oct 8</span><div><div class="track-name">Singapore — Singapore Indoor Stadium</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Oct 10–11</span><div><div class="track-name">Melbourne, Australia — Rod Laver Arena (2 nights)</div><div class="track-note">Oct 10: Performed "All I Want" — a rare addition that sent Livies into a spiral</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Oct 14–15</span><div><div class="track-name">Sydney, Australia — Qudos Bank Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Oct 18</span><div><div class="track-name">Auckland, New Zealand — Spark Arena</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Oct 22</span><div><div class="track-name">Tokyo, Japan — Ariake Arena</div><div class="track-note">Original tour finale. 95 shows completed.</div></div></div>
+
+    <div style="background:rgba(167,139,250,0.07);border-top:1px solid var(--border);padding:0.85rem 1.2rem;margin-top:4px">
+      <p style="font-size:12px;color:var(--text3);line-height:1.6"><strong style="color:var(--text2)">By the numbers:</strong> 95 shows · 1.4M tickets sold · $184.6M grossed · Every single show sold out · Netflix concert film released Oct 29, 2024 · Youngest female solo artist to gross $180M+ on a debut arena tour · The GUTS World Tour is the highest-grossing tour by any artist born in the 21st century (later surpassed by its own extension, GUTS: Spilled, which pushed the combined total to $209.1M).</p>
+    </div>
+  </div>
+
+  <!-- GUTS: SPILLED -->
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-gold" style="margin-bottom:6px">Mar 26 – Jul 1, 2025</div>
+        <div class="album-title">GUTS World Tour: Spilled</div>
+        <div class="album-meta">Extension tour · 12 stadium shows · South America + Europe<br>Her first ever stadium headline dates · Openers: St. Vincent, beabadoobee</div>
+      </div>
+      <div class="album-year" style="font-size:1.1rem">2025</div>
+    </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎤 GUTS: Spilled</span><span class="sticky-album-year">2025 · stadium shows</span></div>
+
+    <div style="padding:0.75rem 1.2rem 0.5rem">
+      <div class="sub-label" style="margin-top:0">South America — Leg 1 (inc. Lollapalooza / Estéreo Picnic)</div>
+    </div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 26–27</span><div><div class="track-name">Curitiba, Brazil — Pedreira Paulo Leminski (2 nights)</div><div class="track-note">First ever solo shows in South America. First-ever stadium headline dates for Olivia.</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 29</span><div><div class="track-name">Lollapalooza Chile — Santiago</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Mar 31</span><div><div class="track-name">Lollapalooza Argentina — Buenos Aires</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 2–3</span><div><div class="track-name">Lollapalooza Brazil — São Paulo (2 dates)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 5</span><div><div class="track-name">Estéreo Picnic Festival — Bogotá, Colombia</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Apr 19–20</span><div><div class="track-name">Mexico City, Mexico — Foro Sol (2 nights)</div><div class="track-note">Mexico City shows grossed $12.1M from 114,000+ tickets — her biggest two-day gross to that point</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jan 30, 2025</span><div><div class="track-name">Inglewood, CA — Intuit Dome (FireAid Benefit)</div><div class="track-note">⭐ Special benefit concert to raise funds for victims of the 2025 Southern California wildfires. Billed as part of the Spilled leg.</div></div></div>
+
+    <div style="padding:0.5rem 1.2rem 0">
+      <div class="sub-label">Europe — Leg 2</div>
+    </div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 29</span><div><div class="track-name">Glastonbury Festival, UK</div><div class="track-note">⭐ Headline slot — one of the most iconic headline sets in Glastonbury's recent history. Performed The Cure's "Friday I'm in Love" and "Just Like Heaven" live with Louis Partridge watching from the crowd. Full set released as a BBC live album Dec 5, 2025.</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jun 27–28</span><div><div class="track-name">Dublin, Ireland — 3Arena (2 nights)</div></div></div>
+    <div class="track"><span class="track-num" style="color:var(--text3);font-size:10px">Jul 1</span><div><div class="track-name">Manchester, UK — Co-op Live</div><div class="track-note">Tour finale for the entire GUTS era. End of an era that lasted 16+ months and crossed 6 continents.</div></div></div>
+
+    <div style="background:rgba(251,191,36,0.06);border-top:1px solid rgba(251,191,36,0.15);padding:0.85rem 1.2rem;margin-top:4px">
+      <p style="font-size:12px;color:#fcd34d;line-height:1.6"><strong>Combined GUTS era total (all legs):</strong> 101 shows · 1.6M tickets · $209.1M grossed · Highest-grossing tour by any artist born in the 21st century.</p>
+    </div>
+  </div>
+
+  <!-- UNRAVELED TOUR -->
+  <div class="album-card">
+    <div class="album-header">
+      <div>
+        <div class="badge badge-teal" style="margin-bottom:6px">Sep 2026 — Upcoming</div>
+        <div class="album-title">The Unraveled Tour</div>
+        <div class="album-meta">Third headlining tour · In support of "you seem pretty sad for a girl so in love"<br>Kicks off September 2026 · Arena dates · Tickets on sale May 7, 2026</div>
+      </div>
+      <div class="album-year" style="font-size:1.1rem">2026</div>
+    </div>
+    <div class="album-header-sticky"><span class="sticky-album-title">🎤 The Unraveled Tour</span><span class="sticky-album-year">2026 · upcoming</span></div>
+    <div class="track"><span class="track-num">★</span><div><div class="track-name">Announced May 2026</div><div class="track-note">Full dates and openers TBA. Set length expected to run just under 2 hours based on GUTS tour precedent. Average start time ~8:25–8:30 PM local. Livies are already camping Ticketmaster.</div></div></div>
   </div>
 </div>
 
@@ -981,11 +1325,21 @@
       <div class="avatar" style="background:rgba(251,191,36,0.1);color:#fcd34d">DN</div>
       <div>
         <h4>Dan Nigro — creative soulmate</h4>
-        <p>Her producer and primary co-writer across SOUR, GUTS, and the new album. Before Olivia, he was a relative unknown. She made him one of pop's most in-demand producers. They're often described as genuinely inseparable creative partners.</p>
+        <p>Her producer and primary co-writer across SOUR, GUTS, and the new album. Before Olivia, he was a relative unknown. She made him one of pop's most in-demand producers. They're often described as genuinely inseparable creative partners. Interestingly, Conan Gray also shares Dan Nigro as a producer — which is partly how Olivia and Conan initially connected.</p>
       </div>
     </div>
   </div>
 
+  <div class="sub-label">Conan Gray — her ride or die</div>
+  <div class="card">
+    <div class="person-card" style="border-bottom:none">
+      <div class="avatar" style="background:rgba(167,139,250,0.15);color:var(--lilac)">CG</div>
+      <div>
+        <h4>Conan Gray — best friend, fellow Gen Z pop icon</h4>
+        <p>One of Olivia's closest and most publicly celebrated friendships. Conan (known for "Heather," "Found Heaven") is half-Japanese and half-white — and like Olivia (half-Filipino), they've bonded over being two of the few mixed-race Asian-American artists at their level of pop stardom. "Any mixed-race person in America is going to have a unique experience," Conan told People. "It's always nice to have a community." Their friendship began when Conan DMed her after hearing "All I Want" on HSMTMTS in 2020, telling her it was "the best song I've heard in a very long time." They formally met at a Fearless (Taylor's Version) listening session in March 2021 — because of course Taylor Swift brought them together. They posted a video promoting Fearless (TV) together in April 2021. Conan has described Olivia as "someone I just adore" and said she "reminds me a lot of my little sister — we very much are siblings in every single way." Olivia called him "so brilliant." Conan's song "Best Friend" on his Superache album (2022) is widely fan-theorized to be partly about his friendship with her. In April 2022, he surprised the crowd in Vancouver during the SOUR Tour, joining Olivia onstage to perform Katy Perry's "The One That Got Away" together — one of the most iconic moments of the whole run. Olivia, Madison Hu, and Iris Apatow all showed up to support Conan on his Superache Tour wearing DIY shirts quoting his own lyrics. They've attended Halloween Horror Nights, the Met Gala, and Grammys after-parties together. Conan attended Olivia's GUTS tour shows. Olivia attended Conan's Found Heaven On Tour (2024) and posted a photo dump of them together afterward. In 2025, they were spotted at Lady Gaga's Mayhem Ball in LA together. Conan told People in 2025: "The Olivia that the world loves is very much the Olivia that I love. She's a great advice giver, and her music is extremely representative of who she is." One of the most wholesome, genuine friendships in pop music.</p>
+      </div>
+    </div>
+  </div>
   <div class="sub-label">The Taylor Swift saga</div>
   <div class="card">
     <p>Taylor championed Olivia early — publicly praised "drivers license," sent her a handwritten note and a ring she wore while writing Red. Olivia interpolated two Swift songs on SOUR, earning Taylor writing credits on both. Things got complicated when Taylor added Sabrina Carpenter to the Eras Tour in 2023. They were seated near each other at the 2023 Grammys but didn't interact. By the 2024 Grammys, Taylor was visibly cheering for Olivia and singing along to "vampire" during her performance. Olivia has firmly denied "vampire" is about Taylor. The friendship appears intact but more private now.</p>
@@ -1095,6 +1449,8 @@
   <p style="margin-top:4px">olivia rodrigo fan deep dive · updated <span>may 2026</span></p>
 </footer>
 
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
 <script>
 function show(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -1103,6 +1459,21 @@ function show(id, btn) {
   btn.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Dynamically set sticky top offset to match actual nav height
+function setStickyOffset() {
+  const navH = document.getElementById('nav').getBoundingClientRect().height;
+  document.querySelectorAll('.album-header-sticky').forEach(el => {
+    el.style.top = navH + 'px';
+  });
+}
+setStickyOffset();
+window.addEventListener('resize', setStickyOffset);
+
+const topBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  topBtn.classList.toggle('visible', window.scrollY > 300);
+});
 </script>
 
 </body>
